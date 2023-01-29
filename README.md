@@ -7,6 +7,9 @@ TODO CLI APP
 This is intended for managing the tasks locally.
 By default uses _$HOME/.todo.json_ file to store the data. (you can change this using _--config_ option any time)
 
+## Sample
+![Sample](https://github.com/dineshr93/todo/blob/main/sample.png?raw=true)
+
 ## Getting Started
 
 Contains following commands
