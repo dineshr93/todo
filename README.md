@@ -8,6 +8,7 @@ This is intended for managing the tasks locally.
 By default uses _$HOME/.todo.json_ file to store the data. (you can change this using _--config_ option any time)
 
 ## Sample
+
 ![Sample](https://github.com/dineshr93/todo/blob/main/sample.png?raw=true)
 
 ## Getting Started
@@ -58,8 +59,8 @@ any issues please raise an bug reguest
 
 ```
 >todo -h
-        TODO CLI APP
-        (by Dinesh Ravi)
+
+        TODO CLI APP (for issue -> https://github.com/dineshr93/todo/issues)
 
 1. Add (todo add)
 2. List (todo ls)
