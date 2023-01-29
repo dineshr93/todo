@@ -29,7 +29,9 @@ Contains following commands
 
 ### Installing
 
-- Rename the binary to todo Add the binary to your environment path and use it. (Releases)[https://github.com/dineshr93/todo/releases]
+Choose appropriate (binary Releases)[https://github.com/dineshr93/todo/releases]
+- Rename the binary to 'todo'.
+- Add the binary to your environment path and use it. 
 
 ### Executing program
 
