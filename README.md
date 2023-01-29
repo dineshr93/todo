@@ -25,7 +25,7 @@ Contains following commands
 
 ### Installing
 
-- Add the binary to your environment path and use it
+- Rename the binary to todo Add the binary to your environment path and use it. (Releases)[https://github.com/dineshr93/todo/releases]
 
 ### Executing program
 
@@ -95,11 +95,11 @@ Dinesh Ravi
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the [Apache-2.0](LICENSE) file for details
+This project is licensed under the Apache License 2.0 or GPL-3.0 - see the [Apache-2.0](LICENSE) file for details
 
 ## Acknowledgments
 
 - [cobra](https://www.github.com/spf13/cobra)
 - [viper](https://www.github.com/spf13/viper)
 - [simpletable](https://www.github.com/alexeyco/simpletable)
-- [joefazee](https://www.github.com/joefazee)
+- [joefazee](https://www.github.com/joefazee) (for models under GPL-2.0)
