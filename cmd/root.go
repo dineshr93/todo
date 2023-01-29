@@ -30,7 +30,7 @@ var rootCmd = &cobra.Command{
 	Use:   "todo",
 	Short: "A brief description of your application",
 	Long: `
-	TODO CLI APP (for issue -> dineshr93)
+	TODO CLI APP (for issue -> https://github.com/dineshr93/todo/issues)
 
 1. Add (todo add)
 2. List (todo ls)

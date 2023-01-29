@@ -11,10 +11,11 @@ By default uses _$HOME/.todo.json_ file to store the data. (you can change this 
 
 Contains following commands
 
-1. Add
-2. Mark Complete
-3. Delete
-4. List
+1. Add (todo add)
+2. List (todo ls)
+3. Delete (supports space separated multiple params) (todo delete)
+4. Mark Complete (supports space separated multiple params) (todo complete)
+5. Mark Pending (supports space separated multiple params) (todo pending)
 
 ### Dependencies
 
@@ -54,27 +55,29 @@ any issues please raise an bug reguest
 
 ```
 >todo -h
-TODO CLI APP
+        TODO CLI APP
+        (by Dinesh Ravi)
 
-1. Add
-2. Mark Complete
-3. Delete
-4. List
+1. Add (todo add)
+2. List (todo ls)
+3. Delete (supports space separated multiple params) (todo delete)
+4. Mark Complete (supports space separated multiple params) (todo complete)
+5. Mark Pending (supports space separated multiple params) (todo pending)
 
 Usage:
   todo [command]
 
 Available Commands:
   add         add a todo Format: Project - task - JIRA link
-  complete    Mark a task as completed
-  delete      Delete a task from the list
+  complete    Mark a task as completed(supports space separated multiple params)
+  delete      Delete a task from the list(supports space separated multiple params)
   help        Help about any command
   ls          List all todos
-  pending     Mark a task as pending
+  pending     Mark a task as pending(supports space separated multiple params)
 
 Flags:
-      --config string   config file (default is $HOME/.tdv.json)
-  -h, --help            help for tdv
+      --config string   config file (default is $HOME/.todo.json)
+  -h, --help            help for todo
   -t, --toggle          Help message for toggle
 
 Use "todo [command] --help" for more information about a command.
