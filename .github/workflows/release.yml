@@ -1,0 +1,119 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: Get tag version
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Get previous tag
+        id: prevtag
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 $(git describe --tags --abbrev=0 2>/dev/null)^ 2>/dev/null || echo "")
+          echo "PREV_TAG=${PREV_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Generate release notes
+        id: releasenotes
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          PREV_TAG=${{ steps.prevtag.outputs.PREV_TAG }}
+
+          echo "# Release ${VERSION}" > release_notes.md
+          echo "" >> release_notes.md
+          echo "**Release Date:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> release_notes.md
+          echo "" >> release_notes.md
+
+          if [ -n "$PREV_TAG" ]; then
+            echo "## 📊 Changes since ${PREV_TAG}" >> release_notes.md
+            echo "" >> release_notes.md
+
+            echo "### 🔢 Commit Count" >> release_notes.md
+            COMMIT_COUNT=$(git rev-list --count ${PREV_TAG}..HEAD)
+            echo "${COMMIT_COUNT} commit(s)" >> release_notes.md
+            echo "" >> release_notes.md
+
+            echo "### 📝 Commit Details" >> release_notes.md
+            echo "" >> release_notes.md
+            git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h) by @%an" >> release_notes.md
+            echo "" >> release_notes.md
+
+            echo "### 📦 Files Changed" >> release_notes.md
+            echo "" >> release_notes.md
+            git diff --name-only ${PREV_TAG}..HEAD | while read file; do
+              ADDITIONS=$(git diff ${PREV_TAG}..HEAD -- $file | grep -c "^+" || echo "0")
+              DELETIONS=$(git diff ${PREV_TAG}..HEAD -- $file | grep -c "^-" || echo "0")
+              echo "- **$file**: +$ADDITIONS -$DELETIONS" >> release_notes.md
+            done
+            echo "" >> release_notes.md
+          else
+            echo "## 🎉 Initial Release" >> release_notes.md
+            echo "" >> release_notes.md
+            echo "This is the first release of the todo CLI tool." >> release_notes.md
+            echo "" >> release_notes.md
+            echo "### 🔢 Total Commits" >> release_notes.md
+            echo "$(git rev-list --count HEAD) commit(s)" >> release_notes.md
+            echo "" >> release_notes.md
+          fi
+
+          echo "## 🛠 Build Artifacts" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "The following binaries are available for download:" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "| Platform | Architecture | File Name |" >> release_notes.md
+          echo "|----------|--------------|-----------|" >> release_notes.md
+          echo "| Linux | 386 | todo-linux-386 |" >> release_notes.md
+          echo "| Linux | amd64 | todo-linux-amd64 |" >> release_notes.md
+          echo "| Windows | 386 | todo-windows-386.exe |" >> release_notes.md
+          echo "| Windows | amd64 | todo-windows-amd64.exe |" >> release_notes.md
+          echo "| FreeBSD | 386 | todo-freebsd-386 |" >> release_notes.md
+          echo "" >> release_notes.md
+
+          echo "## 📋 Prerequisites" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "- Go 1.21 or higher" >> release_notes.md
+          echo "" >> release_notes.md
+
+          echo "## 🚀 Usage" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "See [README.md](https://github.com/dineshr93/todo/blob/main/README.md) for usage instructions." >> release_notes.md
+
+          cat release_notes.md
+
+      - name: Build release artifacts
+        run: |
+          make compile
+          ls -la bin/
+
+      - name: Upload release artifacts
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ steps.version.outputs.VERSION }}
+          body_path: release_notes.md
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          files: |
+            bin/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
